@@ -28,6 +28,13 @@ namespace PMS.Core.Models.DTO
         public string? SpecialRemarks { get; set; }
         [AllowNull]
         public DateTime? AdmittedDate { get; set; }
+        [AllowNull]
+        public string? Fiepath { get; set; }
+        [AllowNull]
+        public string? FieName { get; set; }
+        [AllowNull]
+        public DateTime? CreatedDate { get; set; }
+
 
     }
 }

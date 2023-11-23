@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnitOfWorkDemo.Core.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PMS.Core.Models
 {
@@ -34,5 +35,8 @@ namespace PMS.Core.Models
         public string? Plan { get; set; }
         public string? SpecialRemarks { get; set; }
         public DateTime? AdmittedDate { get; set; }
+        public string? Fiepath { get; set; }
+        public string? FieName { get; set; }
+        public DateTime? CreatedDate { get; set; }
     }
 }
