@@ -33,6 +33,8 @@ namespace PMS.Core.Models.DTO
         [AllowNull]
         public string? FieName { get; set; }
         [AllowNull]
+        public string? Diagnosis { get; set; }
+        [AllowNull]
         public DateTime? CreatedDate { get; set; }
 
 

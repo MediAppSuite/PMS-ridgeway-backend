@@ -37,6 +37,7 @@ namespace PMS.Core.Models
         public DateTime? AdmittedDate { get; set; }
         public string? Fiepath { get; set; }
         public string? FieName { get; set; }
+        public string? Diagnosis { get; set; }
         public DateTime? CreatedDate { get; set; }
     }
 }
