@@ -1,8 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using CsvHelper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using PMS.Core.Models;
+using PMS.Core.Models.DTO;
+using PMS.Core.Models.Enum;
+using System.Formats.Asn1;
+using System.Globalization;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -19,10 +25,12 @@ namespace PMS.Endpoints.Controllers
     public class PatientRecordController : ControllerBase
     {
         public readonly IPatientRecordService _patientRecordService;
+        public IMapper Mapper { get; }
 
-        public PatientRecordController(IPatientRecordService patientRecordService)
+        public PatientRecordController(IPatientRecordService patientRecordService , IMapper mapper)
         {
             this._patientRecordService = patientRecordService;
+            Mapper = mapper;
         }
 
         [HttpGet("GetPatientRecordList")]
@@ -249,6 +257,77 @@ namespace PMS.Endpoints.Controllers
             var json = JsonConvert.SerializeObject(patientRecordReasons, jsonOptions);
 
             return Ok(JsonConvert.DeserializeObject<List<Reason>>(json));
+        }
+
+        [HttpPost("GetPatientRecordsAsCSV/")]
+        public async Task<IActionResult> GetPatientRecordsAsCSV(RecordSearchParamsDto? recordSearchParams)
+        {
+            var patientRecords = _patientRecordService.GetPatientRecordsAsQuarable();
+
+            string[] searchstrings = recordSearchParams.searchstring != null ? recordSearchParams.searchstring.Split(',', '/', '|') : new string[] { };
+
+            // var patientRecords = _patientRecordService.GetPatientRecordsAsQuarable().Where(x => x.PatientTypeID == PatientCategory);
+
+            if (searchstrings.Count() >= 1 && !string.IsNullOrWhiteSpace(searchstrings[0]))
+            {
+                var name = searchstrings[0];
+                patientRecords = patientRecords.Where(x => (x.PatientProfile.FirstName + x.PatientProfile.LastName).Contains(name));
+            }
+
+            if (searchstrings.Count() >= 2 && !string.IsNullOrWhiteSpace(searchstrings[1]))
+            {
+                var userId = searchstrings[1];
+                patientRecords = patientRecords.Where(x => x.PatientProfileID.ToString().Contains(userId));
+            }
+
+            if (searchstrings.Count() >= 3 && !string.IsNullOrWhiteSpace(searchstrings[2]))
+            {
+                patientRecords = patientRecords.Where(x => x.PatientProfile.NIC.Contains(searchstrings[2], StringComparison.OrdinalIgnoreCase));
+            }
+
+
+
+            var exportData = Mapper.Map<List<patientRecordExportDto>>(patientRecords.OrderByDescending(x => x.CreatedDate));
+
+
+            if (exportData == null)
+            {
+                return NotFound();
+            }
+
+
+            //this is for testing the data
+
+            //var patientRecord = new PatientMedicalRecordDetails() { PatientMedicalRecordID = 1, PatientProfileID = 2, BHTNumber = "12" };
+            //List<PatientMedicalRecordDetails> patientMedicalRecordDetails = new List<PatientMedicalRecordDetails>();
+            //patientMedicalRecordDetails.Add(patientRecord);
+
+            byte[] bin;
+            try
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    using (TextWriter textWriter = new StreamWriter(memoryStream))
+                    using (var csvWriter = new CsvWriter(textWriter, CultureInfo.InvariantCulture))
+                    {
+                        //var ExportModel = _mapper.Map <List<PatientRecordExportDTO>>(results);
+                        csvWriter.WriteRecords(exportData);
+
+
+                        //Uncomment below and 136-138 lines, commment above for testings
+                        //csvWriter.WriteRecords(patientMedicalRecordDetails);
+                    }
+
+                    bin = memoryStream.ToArray();
+                }
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
+
+            return File(bin, "application/csv", $"Patient-Records{DateTime.UtcNow}.csv");
         }
     }
 }

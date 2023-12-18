@@ -1,5 +1,4 @@
-﻿using PMS.Core.Models.Enum;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
@@ -7,25 +6,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnitOfWorkDemo.Core.Models;
-using System.Diagnostics.CodeAnalysis;
 
-namespace PMS.Core.Models
+namespace PMS.Core.Models.DTO
 {
-    public class PatientMedicalRecordDetails
+    public class patientRecordExportDto
     {
-        [Key]
+       
         public int PatientMedicalRecordID { get; set; }
 
         [ForeignKey("Patient")]
         public int PatientProfileID { get; set; }
         public virtual Patient? PatientProfile { get; set; }
 
-        
-        public string? BHTNumber { get; set; }
 
-        [ForeignKey("Reason")]
-        public long? ReasonID { get; set; }
-        public virtual Reason? Reason { get; set; }
+        public string? BHTNumber { get; set; }
 
         public int? WardNumber { get; set; }
         public string? Background { get; set; }
