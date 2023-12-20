@@ -12,10 +12,10 @@ namespace PMS.Core.Models.DTO
     public class patientRecordExportDto
     {
        
-        public int PatientMedicalRecordID { get; set; }
+       
 
-        [ForeignKey("Patient")]
-        public int PatientProfileID { get; set; }
+        
+       
         public virtual Patient? PatientProfile { get; set; }
 
 

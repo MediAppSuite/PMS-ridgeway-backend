@@ -50,7 +50,7 @@ namespace UnitOfWorkDemo.Core.Models
         [AllowNull]
         public DateTime? RegisteredDate { get; set; }
 
-        public ICollection<PatientMedicalRecordDetails> PatientMedicalRecordDetails { get; set; }
+        public ICollection<PatientMedicalRecordDetails>? PatientMedicalRecordDetails { get; set; }
     }
 
 }
