@@ -117,5 +117,28 @@ namespace UnitOfWorkDemo.Controllers
                 return BadRequest();
             }
         }
+
+        [HttpGet("GetPatientStats")]
+        public IActionResult GetPatientStats()
+        {
+            try
+            {
+                var patientStats = _patientService.GetPatientStats();
+
+                if (patientStats != null)
+                {
+                    return Ok(patientStats);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
     }
 }

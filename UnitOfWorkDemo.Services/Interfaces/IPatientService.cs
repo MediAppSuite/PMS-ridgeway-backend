@@ -19,5 +19,7 @@ namespace UnitOfWorkDemo.Services.Interfaces
         Task<bool> UpdatePatient(Patient patientDetails);
 
         Task<bool> DeletePatient(int patientId);
+
+        IQueryable<GetPatientStatisticsDto> GetPatientStats();
     }
 }

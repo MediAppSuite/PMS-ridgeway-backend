@@ -49,5 +49,10 @@ namespace PMS.Core.Models.DTO
 
         [AllowNull]
         public bool? isActive { get; set; }
+
+        [AllowNull]
+        public DateTime? RegisteredDate { get; set; }
+
+        public ICollection<PatientMedicalRecordDetails>? PatientMedicalRecordDetails { get; set; }
     }
 }
