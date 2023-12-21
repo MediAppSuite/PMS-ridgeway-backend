@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using PMS.Core.Models.DTO;
 using UnitOfWorkDemo.Core.Models;
 using UnitOfWorkDemo.Services.Interfaces;
@@ -139,6 +140,45 @@ namespace UnitOfWorkDemo.Controllers
                 // Log the exception or handle it accordingly
                 return StatusCode(500, "Internal Server Error");
             }
+        }
+
+        [HttpGet("GetPatientBySearchString/{searchstring}/{searchId}")]
+        public async Task<IActionResult> GetPatientBySearchString(string searchstring, int searchId)
+        {
+            string[] searchstrings = searchstring.Split(',', '/', '|');
+
+            var patientRecords = _patientService.GetPatientRecordsAsQuarable();
+
+            switch (searchId)
+            {
+                case 0:
+                    patientRecords = patientRecords.Where(x => (x.FirstName + x.LastName).Contains(searchstring));
+                    break;
+                case 1:
+                    patientRecords = patientRecords.Where(x => x.ContactNumber.Contains(searchstring));
+                    break;
+                case 2:
+                    patientRecords = patientRecords.Where(x => x.NIC.Contains(searchstring));
+                    break;
+
+            }
+
+
+            var results = patientRecords.ToList();
+            if (results == null)
+            {
+                return NotFound();
+            }
+            // Use JsonSerializerOptions with ReferenceHandler.Preserve
+            var jsonOptions = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+            };
+
+            // Serialize the results to JSON
+            var json = JsonConvert.SerializeObject(results, jsonOptions);
+
+            return Ok(JsonConvert.DeserializeObject<List<Patient>>(json));
         }
     }
 }

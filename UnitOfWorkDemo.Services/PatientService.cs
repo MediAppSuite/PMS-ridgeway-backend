@@ -147,5 +147,14 @@ namespace UnitOfWorkDemo.Services
         {
             return _unitOfWork.Patient.GetPatientStats();
         }
+
+        public IQueryable<Patient> GetPatientRecordsByPatientName(string patientName)
+         => _unitOfWork.Patient.GetPatientByPatientName(patientName);
+
+        public IQueryable<Patient> GetPatientRecordsAsQuarable()
+            => _unitOfWork.Patient.GetPatientAsQuarable();
+
+        public IQueryable<Patient> GetPatientRecordsById(int patientId)
+            => _unitOfWork.Patient.GetPatientById(patientId);
     }
 }
