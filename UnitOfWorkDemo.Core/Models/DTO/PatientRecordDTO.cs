@@ -13,7 +13,7 @@ namespace PMS.Core.Models.DTO
 
         public int PatientProfileID { get; set; }
         [AllowNull]
-        public int? WardNumber { get; set; }
+        public string? WardNumber { get; set; }
         [AllowNull]
         public string? Background { get; set; }
         [AllowNull]

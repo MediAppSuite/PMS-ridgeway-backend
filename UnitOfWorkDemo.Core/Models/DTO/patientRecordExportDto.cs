@@ -11,17 +11,13 @@ namespace PMS.Core.Models.DTO
 {
     public class patientRecordExportDto
     {
-       
-       
-
-        
-       
+           
         public virtual Patient? PatientProfile { get; set; }
 
 
         public string? BHTNumber { get; set; }
 
-        public int? WardNumber { get; set; }
+        public string? WardNumber { get; set; }
         public string? Background { get; set; }
         public string? Investigations { get; set; }
         public string? Treatments { get; set; }
