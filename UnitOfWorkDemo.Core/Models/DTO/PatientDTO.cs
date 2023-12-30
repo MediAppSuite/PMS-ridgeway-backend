@@ -45,7 +45,7 @@ namespace PMS.Core.Models.DTO
         public string? insuranceInfomation { get; set; }
 
         [AllowNull]
-        public string NIC { get; set; }
+        public string? NIC { get; set; }
 
         [AllowNull]
         public bool? isActive { get; set; }

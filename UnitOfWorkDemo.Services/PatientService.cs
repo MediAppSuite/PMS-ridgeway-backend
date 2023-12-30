@@ -38,7 +38,7 @@ namespace UnitOfWorkDemo.Services
                         EmergencyContactNo = patientDetails.EmergencyContactNo,
                         FirstName = patientDetails.FirstName,
                         Gender = patientDetails.Gender,
-                        NIC = patientDetails.NIC,
+                      //  NIC = patientDetails.NIC, removed for now
                         MedicalHistory = patientDetails.MedicalHistory,
                         insuranceInfomation = patientDetails.insuranceInfomation,
                         isActive = patientDetails.isActive,
@@ -127,7 +127,7 @@ namespace UnitOfWorkDemo.Services
                     patient.BloodGroup = patientDetails.BloodGroup;
                     patient.MedicalHistory = patientDetails.MedicalHistory;
                     patient.Allergic = patientDetails.Allergic;
-                    patient.NIC = patientDetails.NIC;
+                   // patient.NIC = patientDetails.NIC;  removed  for now 
                     patient.insuranceInfomation = patientDetails.insuranceInfomation;
                     patient.isActive = patientDetails.isActive;
                     _unitOfWork.Patient.Update(patient);

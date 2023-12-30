@@ -18,7 +18,7 @@ namespace UnitOfWorkDemo.Core.Models
 
         [AllowNull]
         public DateTime? DateOfBirth { get; set; }
-        public string NIC { get; set; }
+        public string? NIC { get; set; }
 
         [AllowNull]
         public string? Gender { get; set; }
